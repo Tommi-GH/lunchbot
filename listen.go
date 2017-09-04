@@ -23,6 +23,11 @@ func init() {
 
 func handleMessage(w http.ResponseWriter, r *http.Request) {
 
+	if !strings.EqualFold(r.PostFormValue("token"), token) {
+		http.Error(w, "Invalid token.", http.StatusBadRequest)
+		return
+	}
+
 	ctx := appengine.NewContext(r)
 	w.Header().Set("content-type", "application/json")
 
@@ -63,33 +68,33 @@ func createResponse(r *http.Request, message string) (*slashResponse, bool) {
 
 	var f func(*html.Node)
 	f = func(n *html.Node) {
-		if n.Type == html.TextNode && strings.HasPrefix(n.Data, "Lounaslista") {
-			respMessage = n.Data + "\n"
-		} else if n.Type == html.TextNode && strings.HasPrefix(n.Data, "Maanantai") {
+		if n.Type == html.TextNode && strings.HasPrefix(n.Data, "Lounaslista ") {
+			respMessage = n.Data + "\n" + "\n"
+		} else if (len(message) == 0 || strings.Contains(strings.ToLower(message), "week") || strings.Contains(strings.ToLower(message), "viikko") || strings.Contains(strings.ToLower(message), "monday") || strings.Contains(strings.ToLower(message), "maanantai")) && n.Type == html.TextNode && strings.HasPrefix(n.Data, "Maanantai") {
 			respMessage = respMessage + n.Data
 			respMessage = respMessage + n.NextSibling.NextSibling.Data
 			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.Data
 			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.Data
-			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.Data
-		} else if n.Type == html.TextNode && strings.HasPrefix(n.Data, "Tiistai") {
+			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.Data + "\n" + "\n"
+		} else if (len(message) == 0 || strings.Contains(strings.ToLower(message), "week") || strings.Contains(strings.ToLower(message), "viikko") || strings.Contains(strings.ToLower(message), "tuesday") || strings.Contains(strings.ToLower(message), "tiistai")) && n.Type == html.TextNode && strings.HasPrefix(n.Data, "Tiistai") {
 			respMessage = respMessage + n.Data
 			respMessage = respMessage + n.NextSibling.NextSibling.Data
 			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.Data
 			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.Data
-			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.Data
-		} else if n.Type == html.TextNode && strings.HasPrefix(n.Data, "Keskiviikko") {
+			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.Data + "\n" + "\n"
+		} else if (len(message) == 0 || strings.Contains(strings.ToLower(message), "week") || strings.Contains(strings.ToLower(message), "viikko") || strings.Contains(strings.ToLower(message), "wednesday") || strings.Contains(strings.ToLower(message), "keskiviikko")) && n.Type == html.TextNode && strings.HasPrefix(n.Data, "Keskiviikko") {
 			respMessage = respMessage + n.Data
 			respMessage = respMessage + n.NextSibling.NextSibling.Data
 			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.Data
 			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.Data
-			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.Data
-		} else if n.Type == html.TextNode && strings.HasPrefix(n.Data, "Torstai") {
+			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.Data + "\n" + "\n"
+		} else if (len(message) == 0 || strings.Contains(strings.ToLower(message), "week") || strings.Contains(strings.ToLower(message), "viikko") || strings.Contains(strings.ToLower(message), "thursday") || strings.Contains(strings.ToLower(message), "torstai")) && n.Type == html.TextNode && strings.HasPrefix(n.Data, "Torstai") {
 			respMessage = respMessage + n.Data
 			respMessage = respMessage + n.NextSibling.NextSibling.Data
 			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.Data
 			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.Data
-			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.Data
-		} else if n.Type == html.TextNode && strings.HasPrefix(n.Data, "Perjantai") {
+			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling.Data + "\n" + "\n"
+		} else if (len(message) == 0 || strings.Contains(strings.ToLower(message), "week") || strings.Contains(strings.ToLower(message), "viikko") || strings.Contains(strings.ToLower(message), "friday") || strings.Contains(strings.ToLower(message), "perjantai")) && n.Type == html.TextNode && strings.HasPrefix(n.Data, "Perjantai") {
 			respMessage = respMessage + n.Data
 			respMessage = respMessage + n.NextSibling.NextSibling.Data
 			respMessage = respMessage + n.NextSibling.NextSibling.NextSibling.NextSibling.Data
