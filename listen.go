@@ -110,7 +110,7 @@ func createResponse(r *http.Request, message string) (*slashResponse, bool) {
 	resp.Body.Close()
 
 	return &slashResponse{
-		ResponseType: "in_channel",
+		ResponseType: "ephemeral",
 		Text:         respMessage,
 	}, false
 }
